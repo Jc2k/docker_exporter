@@ -82,8 +82,6 @@ async def fetch_metrics(request):
             def collect(self):
                 return metrics
 
-        print(generate_latest(RestrictedRegistry()))
-
         return web.Response(
             body=generate_latest(RestrictedRegistry()),
             content_type='text/plain; version=0.4',
