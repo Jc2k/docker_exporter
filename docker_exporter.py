@@ -26,7 +26,7 @@ async def fetch_container_metrics(container):
 
     monitoring_address = None
 
-    if os.environ.get('EXPORTER_NETWORK_MODE', 'container') == 'container':
+    if os.environ.get('DOCKER_EXPORTER_NETWORK_MODE', 'container') == 'container':
         monitoring_address = attrs['NetworkSettings']['Networks'][network]['IPAddress']
     else:
         if network == 'host':
@@ -97,4 +97,7 @@ async def fetch_metrics(request):
 if __name__ == '__main__':
     app = web.Application()
     app.add_routes([web.get('/metrics', fetch_metrics)])
-    web.run_app(app)
+    web.run_app(
+        app,
+        port=int(os.environ.get('DOCKER_EXPORTER_PORT', '8080')),
+    )
